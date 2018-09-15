@@ -2,31 +2,48 @@ var demo = {};
 var centerX = 1500/2;
 var centerY = 1000/2;
 var protoman;
-var speed = 4;
+var speed = 6;
 demo.state0 = function () {};
 demo.state0.prototype = {
     preload: function () {
         game.load.image('protoman', 'assets/sprites/Protoman1.0.png');
+        game.load.image('citybg', 'assets/backgrounds/city_background.png');
         
     },
     create: function () {
+        game.physics.startSystem(Phaser.Physics.ARCADE);
         this.game.stage.backgroundColor = "#00FF00";
         console.log("state0");
         addChangeStateEventListener();
+        game.world.setBounds(0, 0, 3000, 1000);
         game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         
+        var citybg = game.add.sprite(0, 0, 'citybg');
         protoman = game.add.sprite(centerX, centerY, 'protoman');
         protoman.anchor.setTo(0.5);
+        protoman.scale.setTo(0.7);
+        
+        game.physics.enable(protoman);
+        protoman.body.collideWorldBounds = true;
+        
+        game.camera.follow(protoman);
+        game.camera.deadzone = new Phaser.Rectangle(centerX, - 300, 0, 600, 1000);
+       
     },
     update: function () {
         if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
             protoman.x += speed;
+            protoman.scale.setTo(0.7);
         }
         else if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)){
             protoman.x -= speed;
+            protoman.scale.setTo(-0.7, 0.7);
         }
         else if (game.input.keyboard.isDown(Phaser.Keyboard.UP)){
             protoman.y -= speed;
+            if (protoman.y < 386.9){
+                protoman.y = 386.9;
+            }
         }
         else if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN)){
             protoman.y += speed;
