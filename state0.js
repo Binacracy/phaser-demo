@@ -1,14 +1,37 @@
 var demo = {};
+var centerX = 1500/2;
+var centerY = 1000/2;
+var protoman;
+var speed = 4;
 demo.state0 = function () {};
 demo.state0.prototype = {
-    preload: function () {},
+    preload: function () {
+        game.load.image('protoman', 'assets/sprites/Protoman1.0.png');
+        
+    },
     create: function () {
         this.game.stage.backgroundColor = "#00FF00";
         console.log("state0");
         addChangeStateEventListener();
         game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        
+        protoman = game.add.sprite(centerX, centerY, 'protoman');
+        protoman.anchor.setTo(0.5);
     },
-    update: function () {}
+    update: function () {
+        if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
+            protoman.x += speed;
+        }
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)){
+            protoman.x -= speed;
+        }
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.UP)){
+            protoman.y -= speed;
+        }
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.DOWN)){
+            protoman.y += speed;
+        }
+    }
 };
 
 function changeState(i, stateNum){
