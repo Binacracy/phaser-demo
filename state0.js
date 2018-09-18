@@ -6,7 +6,7 @@ var speed = 6;
 demo.state0 = function () {};
 demo.state0.prototype = {
     preload: function () {
-        game.load.image('protoman', 'assets/sprites/Protoman1.0.png');
+        game.load.spritesheet('protoman', 'assets/spritesheet/Protoman_spritesheet.png', 320, 320);
         game.load.image('citybg', 'assets/backgrounds/city_background.png');
         
     },
@@ -26,6 +26,8 @@ demo.state0.prototype = {
         game.physics.enable(protoman);
         protoman.body.collideWorldBounds = true;
         
+        protoman.animations.add('walk', [0,1]);
+        
         game.camera.follow(protoman);
         game.camera.deadzone = new Phaser.Rectangle(centerX, - 300, 0, 600, 1000);
        
@@ -34,12 +36,18 @@ demo.state0.prototype = {
         if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
             protoman.x += speed;
             protoman.scale.setTo(0.7);
+            protoman.animations.play('walk', 14, true);
         }
         else if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)){
             protoman.x -= speed;
             protoman.scale.setTo(-0.7, 0.7);
+            protoman.animations.play('walk', 14, true);
         }
-        else if (game.input.keyboard.isDown(Phaser.Keyboard.UP)){
+        else{
+            protoman.animations.stop('walk');
+            protoman.frame = 0;
+        }
+        if (game.input.keyboard.isDown(Phaser.Keyboard.UP)){
             protoman.y -= speed;
             if (protoman.y < 386.9){
                 protoman.y = 386.9;
